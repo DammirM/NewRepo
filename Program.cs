@@ -18,9 +18,9 @@ namespace LinqLabb
 
             while (MenuActive == true)
             {
-                Console.WriteLine("Labb2 Menu:\n1. Teacher and Subject\n2. " +
-                "TeacherwithStudents\n3. Subject Contains\n3. Edit Subject" +
-                "\n3. Change Teacher\n6. Exit");
+                Console.WriteLine("Labb2 Menu:\n1. Math Teacher\n2. " +
+                "TeacherwithStudents\n3. Subject Contains\n4. Edit Subject" +
+                "\n5. Change Teacher\n6. Exit");
                 string MenuChoice = Console.ReadLine();
 
 
@@ -58,7 +58,7 @@ namespace LinqLabb
             Console.Clear();
 
             Console.WriteLine($"Math Teacher: \n");
-            var mathTeachers = db.Teachers.Where(t => t.Subjects.Any(s => s.SubjectName == "Matte"));
+            var mathTeachers = db.Teachers.Where(t => t.Subjects.Any(s => s.SubjectName == "Math"));
 
             foreach (var item in mathTeachers)
             {
@@ -108,35 +108,34 @@ namespace LinqLabb
 
         public static void Contain(DbCon db)
         {
-            Console.WriteLine("Contain");
+            Console.Clear();
 
-            bool hasMathCourse = db.Subjects.Select(c => c.SubjectName).Contains("Matte");
-            if (hasMathCourse)
-            {
-                Console.WriteLine("The course exists");
-            }
-            else
-            {
-                Console.WriteLine("TThe course does not exist");
-            }
+            var hasMathCourse = db.Subjects
+                .Select(c => c.SubjectName)
+                .Contains("Programmering1");
+
+                Console.WriteLine($"Does Progroammering 1 exist : {hasMathCourse}");
+
+            Console.ReadKey();
+            Console.Clear();
+
 
         }
         public static void EditSubject(DbCon db)
         {
 
+            Console.Clear();
 
-            var course = db.Subjects.FirstOrDefault(c => c.SubjectName == "Programmering1");
-            if (course != null)
-            {
-                course.SubjectName = "Matte";
+            var course = db.Subjects.FirstOrDefault(c => c.SubjectName == "OOP");
+            
+            string sub = course.SubjectName;
+                 
+                course.SubjectName = "Programmering2";
                 db.SaveChanges();
-                Console.WriteLine("Subject name updated successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Subject not found.");
-            }
+                Console.WriteLine($"{sub} updated successfully to {course.SubjectName}.");
 
+            Console.ReadKey();
+            Console.Clear();
         }
 
 
