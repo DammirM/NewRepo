@@ -110,11 +110,14 @@ namespace LinqLabb
         {
             Console.Clear();
 
+
+
             var hasMathCourse = db.Subjects
                 .Select(c => c.SubjectName)
                 .Contains("Programmering1");
 
-                Console.WriteLine($"Does Progroammering 1 exist : {hasMathCourse}");
+
+            Console.WriteLine($"Does Progroammering 1 exist : {hasMathCourse}");
 
             Console.ReadKey();
             Console.Clear();
@@ -127,12 +130,12 @@ namespace LinqLabb
             Console.Clear();
 
             var course = db.Subjects.FirstOrDefault(c => c.SubjectName == "OOP");
-            
+
             string sub = course.SubjectName;
-                 
-                course.SubjectName = "Programmering2";
-                db.SaveChanges();
-                Console.WriteLine($"{sub} updated successfully to {course.SubjectName}.");
+
+            course.SubjectName = "Programmering2";
+            db.SaveChanges();
+            Console.WriteLine($"{sub} updated successfully to {course.SubjectName}.");
 
             Console.ReadKey();
             Console.Clear();
@@ -142,36 +145,55 @@ namespace LinqLabb
         public static void ChangeTeacher(DbCon db)
         {
 
+            //int newTeacherId = 1; // Update with the new teacher ID
 
-            var teach = db.Teachers.FirstOrDefault(c => c.Name == "Anas");
-            if (teach != null)
+
+            //var tea = db.Courses
+            //                       .Include(c => c.Teachers)
+            //                       .FirstOrDefault(c => c.ID == 3);// Include the Teachers navigation property
+
+
+            //newTeacherId = tea.ID;
+            int newTeacherId = 4; // Update with the new teacher ID
+
+            var course = db.Courses
+                .Include(c => c.Teachers)
+                .FirstOrDefault(c => c.ID == 1);
+
+            if (course != null)
             {
-                teach.Name = "Reidar";
-                db.SaveChanges();
-                Console.WriteLine("Teacher succesfully changed");
+                var teacherToReplace = course.Teachers.FirstOrDefault(t => t.ID == 1); // replace
+                var newTeacher = db.Teachers.FirstOrDefault(t => t.ID == newTeacherId);
+
+                if (teacherToReplace != null && newTeacher != null)
+                {
+                    course.Teachers.Remove(teacherToReplace);
+                    course.Teachers.Add(newTeacher);
+
+                    db.SaveChanges();
+                }
             }
-            else
-            {
-                Console.WriteLine("Teacher not found");
-            }
+
         }
-    
+
+
+
 
 
         public void Delete(DbCon db)
         {
 
-            List<Student> studentsToDelete = db.Students.Where(s => s.ID == 12).ToList(); 
+            List<Student> studentsToDelete = db.Students.Where(s => s.ID == 12).ToList();
             if (studentsToDelete.Count > 0)
             {
-                db.Students.RemoveRange(studentsToDelete); 
-                db.SaveChanges(); 
+                db.Students.RemoveRange(studentsToDelete);
+                db.SaveChanges();
             }
         }
 
         public void AddKoppling(DbCon db)
         {
-            Course course = db.Courses.FirstOrDefault(c => c.ID == 2); 
+            Course course = db.Courses.FirstOrDefault(c => c.ID == 2);
 
             course.Teachers = new List<Teacher>()
             {
@@ -215,14 +237,14 @@ namespace LinqLabb
             };
 
         }
-        
 
-
-
-
-
-
-
-
+    }
 }
-}
+
+
+
+
+
+
+
+
