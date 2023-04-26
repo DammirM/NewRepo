@@ -145,24 +145,21 @@ namespace LinqLabb
         public static void ChangeTeacher(DbCon db)
         {
 
-            //int newTeacherId = 1; // Update with the new teacher ID
+            Console.Clear() ;
+            // Lärare som ska ta plats
+            int newTeacherId = 4; 
 
 
-            //var tea = db.Courses
-            //                       .Include(c => c.Teachers)
-            //                       .FirstOrDefault(c => c.ID == 3);// Include the Teachers navigation property
-
-
-            //newTeacherId = tea.ID;
-            int newTeacherId = 4; // Update with the new teacher ID
-
+            // kursen jag vill ändra lärare i
             var course = db.Courses
                 .Include(c => c.Teachers)
                 .FirstOrDefault(c => c.ID == 1);
 
             if (course != null)
             {
-                var teacherToReplace = course.Teachers.FirstOrDefault(t => t.ID == 1); // replace
+                // lärareID som ska ersättas
+                var teacherToReplace = course.Teachers.FirstOrDefault(t => t.ID == 1); 
+
                 var newTeacher = db.Teachers.FirstOrDefault(t => t.ID == newTeacherId);
 
                 if (teacherToReplace != null && newTeacher != null)
@@ -173,10 +170,10 @@ namespace LinqLabb
                     db.SaveChanges();
                 }
             }
+            Console.ReadKey();
+            Console.Clear();
 
         }
-
-
 
 
 
